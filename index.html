@@ -69,25 +69,32 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button onclick="consoleLog()">Console Log</button>
+      <button onclick="consoleError()">Console Error</button>
+      <button onclick="consoleCount()">Console Count</button>
+      <button onclick="consoleWarn()">Console Warn</button>
+      <button onclick="consoleAssert()">Console Assert</button>
+      <button onclick="consoleClear()">Console Clear</button>
+      <button onclick="consoleDir()">Console Dir</button>
+      <button onclick="consoleDirxml()">Console dirxml</button>
+      <button onclick="consoleGroupStart()">Console Group Start</button>
+      <button onclick="consoleGroupEnd()">Console Group End</button>
+      <button onclick="consoleTable()">Console Table</button>
+      <button onclick="consoleTime()">Start Timer</button>
+      <button onclick="consoleTimeEnd()">End Timer</button>
+      <button onclick="consoleTrace()">Console Trace</button>
+      <button onclick="errorFunction()">Trigger a Global Error</button>
     </section>
   </main>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+
 
   <script>
+  window.TrackJS && TrackJS.install({ 
+    token: "67527147e34945c48fafac4c118de35d"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -102,6 +109,138 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    // Step 2
+    function consoleLog() {
+      console.log("Console Log Demo");
+    }
+
+    function consoleError() {
+      console.error("error statement");
+    }
+
+    function consoleCount() {
+      console.count();
+      console.count();
+      console.count();
+    }
+
+    function consoleWarn() {
+      console.warn("warn statement")
+    }
+
+    function consoleAssert() {
+      const x = 5;
+      const y = 3;
+      const reason = "Assert Demo";
+      console.assert(x < y, { x, y, reason });
+    }
+
+    function consoleClear() {
+      console.clear();
+    }
+
+    function consoleDir() {
+      console.dir(document.head);
+
+    }
+
+    function consoleDirxml() {
+      console.dirxml(document);
+    }
+
+    function consoleGroupStart() {
+      console.group("Console Log Demo")
+
+    }
+
+    function consoleGroupEnd() {
+      console.groupEnd("group end")
+
+    }
+
+    function consoleTable() {
+      var people = [
+        {
+          first: 'René',
+          last: 'Magritte',
+        },
+        {
+          first: 'Chaim',
+          last: 'Soutine',
+          birthday: '18930113',
+        },
+        {
+          first: 'Henri',
+          last: 'Matisse',
+        }
+      ];
+      console.table(people);
+    }
+
+    function consoleTime() {
+      console.time();
+    }
+
+    function consoleTimeEnd() {
+      for (var i = 0; i < 100000; i++) {
+        let square = i ** 2;
+      }
+      console.timeEnd();
+    }
+
+    function consoleTrace() {
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { fourth(); };
+      const fourth = () => { console.trace(); };
+      first();
+    }
+
+    // Try Catch Step 3
+    //https://javascript.info/try-catch
+
+    function getData(data) {
+      if (!data) {
+        throw new ValidationError("From Custom Throw: Invalid data provided");
+      }
+      const processedData = data.toUpperCase();
+      return processedData;
+    }
+
+    // Step 4
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ValidationError"; // (2)
+      }
+    }
+
+    function errorFunction() {
+      try {
+        getData(null)
+      } catch (err) {
+        // error handling
+        TrackJS.track('Testing TrackJS!');
+        console.error("Bad data, This threw a Custom ValidationError")
+      }
+      finally {
+        console.log("Finally")
+      }
+    }
+    
+
+    // function test() {
+    //   throw new ValidationError("Step 4 Custom Error based on the given article javascript.info/cuustom-errors!");
+    // }
+
+    // try {
+    //   test();
+    // } catch (err) {
+    //   alert(err.message); // Whoops!
+    //   alert(err.name); // ValidationError
+    //   alert(err.stack); // a list of nested calls with line numbers for each
+    // }
+
   </script>
 </body>
 
